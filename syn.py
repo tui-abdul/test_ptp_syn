@@ -20,18 +20,16 @@ class camera_publisher(Node):
 
     
         image_color = '/basler_pole_a_left_id_103_sn_603/my_camera/pylon_ros2_camera_node/image_raw'
-        image_color1 = '/basler_pole_a_left_id_104_sn_618/my_camera/pylon_ros2_camera_node/image_raw'
-
+        image_color1 = '/basler_pole_a_right_id_104_sn_618/my_camera/pylon_ros2_camera_node/image_raw'
         ouster = '/ouster_pole_a_1108/points'
                 # Subscribe to topics
         image_sub = message_filters.Subscriber(self,Image,image_color)
         image_sub1 = message_filters.Subscriber(self,Image,image_color1)
-
         ouster = message_filters.Subscriber(self, PointCloud2,ouster,qos_profile= qos.qos_profile_sensor_data)
 
         # Synchronize the topics by time
         ats = message_filters.ApproximateTimeSynchronizer(
-            [image_sub, image_sub1, ouster], queue_size=20, slop=0.25, allow_headerless=True)
+            [image_sub, image_sub1, ouster], queue_size=20, slop=0.10, allow_headerless=True)
         ats.registerCallback(self.callback)
         self.bridge = CvBridge()
         print('it works till here')
